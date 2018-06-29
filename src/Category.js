@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 class Category extends Component {
   render () {
-    return <h2>Category 1</h2>
+    return <h2>Category {this.props.match.params.id}</h2>
   }
 }
 
