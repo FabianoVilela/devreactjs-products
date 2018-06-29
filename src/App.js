@@ -29,7 +29,7 @@ class App extends Component {
               </ul>
             </div>
           </nav>
-          <div className='container'>
+          <div className='container-fluid'>
             <Route exact path='/' component={Home} />
             <Route path='/products' component={Products} />
             <Route exact path='/about' component={About} />
