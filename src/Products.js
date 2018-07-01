@@ -10,6 +10,7 @@ class Products extends Component {
     super(props)
     this.handlerNewCategory = this.handlerNewCategory.bind(this)
     this.loadCategories = this.loadCategories.bind(this)
+    this.renderCategory = this.renderCategory.bind(this)
     this.state = {
       categories: []
     }
@@ -30,11 +31,16 @@ class Products extends Component {
     return (
       <li key={category.id} className='list-group-item'>
         <Link to={`/products/category/${category.id}`}>{category.name}</Link>
+        <i className='material-icons float-right delete-button' onClick={() => this.deleteCategory(category.id)}>delete</i>
       </li>
     )
   }
-  setActive () {
-    return 'active'
+  deleteCategory (id) {
+    axios
+      .delete('http://localhost:3001/categories/' + id)
+      .then(res => {
+        this.loadCategories()
+      })
   }
   handlerNewCategory (key) {
     if (key.keyCode === 13) {
