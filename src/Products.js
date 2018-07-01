@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Route, Link } from 'react-router-dom'
-import axios from 'axios'
 
 import Api from './Api'
 import ProductsHome from './ProductsHome'
@@ -43,11 +42,9 @@ class Products extends Component {
   }
   handlerNewCategory (key) {
     if (key.keyCode === 13) {
-      axios
-        .post('http://localhost:3001/categories',
-          {
-            name: this.refs.category.value
-          })
+      const name = this.refs.category.value
+
+      Api.addCategory(name)
         .then(res => {
           this.loadCategories()
           this.refs.category.value = ''

@@ -6,6 +6,20 @@ import Products from './Products'
 import About from './About'
 
 class App extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      categories: []
+    }
+  }
+  loadCategories () {
+    this.props.api.loadCategories()
+      .then(res => {
+        this.setState({
+          categories: res.data
+        })
+      })
+  }
   render () {
     return (
       <Router>
