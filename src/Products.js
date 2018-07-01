@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Route, Link } from 'react-router-dom'
 import axios from 'axios'
 
+import Api from './Api'
 import ProductsHome from './ProductsHome'
 import Category from './Category'
 
@@ -19,8 +20,7 @@ class Products extends Component {
     this.loadCategories()
   }
   loadCategories () {
-    axios
-      .get('http://localhost:3001/categories')
+    Api.loadCategories()
       .then(res => {
         this.setState({
           categories: res.data
@@ -36,8 +36,7 @@ class Products extends Component {
     )
   }
   deleteCategory (id) {
-    axios
-      .delete('http://localhost:3001/categories/' + id)
+    Api.deleteCategory(id)
       .then(res => {
         this.loadCategories()
       })
