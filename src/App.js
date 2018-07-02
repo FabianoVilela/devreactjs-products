@@ -8,6 +8,10 @@ import About from './About'
 class App extends Component {
   constructor (props) {
     super(props)
+
+    this.loadCategories = this.loadCategories.bind(this)
+    this.deleteCategory = this.deleteCategory.bind(this)
+    this.addCategory = this.addCategory.bind(this)
     this.state = {
       categories: []
     }
@@ -19,6 +23,21 @@ class App extends Component {
           categories: res.data
         })
       })
+  }
+  addCategory (name) {
+    this.props.api.addCategory(name)
+      .then(res => {
+        this.loadCategories()
+      })
+  }
+  deleteCategory (id) {
+    this.props.api.deleteCategory(id)
+      .then(res => {
+        this.loadCategories()
+      })
+  }
+  componentDidMount () {
+    this.loadCategories()
   }
   render () {
     return (
@@ -45,7 +64,15 @@ class App extends Component {
           </nav>
           <div className='container-fluid'>
             <Route exact path='/' component={Home} />
-            <Route path='/products' component={Products} />
+            <Route path='/products' render={(props) => {
+              return (<Products
+                {...props}
+                loadCategories={this.loadCategories}
+                addCategory={this.addCategory}
+                categories={this.state.categories}
+                deleteCategory={this.deleteCategory}
+              />)
+            }} />
             <Route exact path='/about' component={About} />
           </div>
         </div>

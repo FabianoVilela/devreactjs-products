@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Route, Link } from 'react-router-dom'
 
-import Api from './Api'
 import ProductsHome from './ProductsHome'
 import Category from './Category'
 
@@ -9,51 +8,28 @@ class Products extends Component {
   constructor (props) {
     super(props)
     this.handlerNewCategory = this.handlerNewCategory.bind(this)
-    this.loadCategories = this.loadCategories.bind(this)
     this.renderCategory = this.renderCategory.bind(this)
-    this.state = {
-      categories: []
-    }
   }
   componentDidMount () {
-    this.loadCategories()
-  }
-  loadCategories () {
-    Api.loadCategories()
-      .then(res => {
-        this.setState({
-          categories: res.data
-        })
-      })
+    this.props.loadCategories()
   }
   renderCategory (category) {
     return (
       <li key={category.id} className='list-group-item'>
         <Link to={`/products/category/${category.id}`}>{category.name}</Link>
-        <i className='material-icons float-right delete-button' onClick={() => this.deleteCategory(category.id)}>delete</i>
+        <i className='material-icons float-right delete-button' onClick={() => this.props.deleteCategory(category.id)}>delete</i>
       </li>
     )
-  }
-  deleteCategory (id) {
-    Api.deleteCategory(id)
-      .then(res => {
-        this.loadCategories()
-      })
   }
   handlerNewCategory (key) {
     if (key.keyCode === 13) {
       const name = this.refs.category.value
-
-      Api.addCategory(name)
-        .then(res => {
-          this.loadCategories()
-          this.refs.category.value = ''
-        })
+      this.props.addCategory(name)
+      this.refs.category.value = ''
     }
   }
   render () {
-    const { match } = this.props
-    const { categories } = this.state
+    const { match, categories } = this.props
     return (
       <div className='row'>
         <div className='col-md-3'>
