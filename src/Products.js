@@ -7,17 +7,54 @@ import Category from './Category'
 class Products extends Component {
   constructor (props) {
     super(props)
+    this.state = {
+      currentCategory: ''
+    }
     this.handlerNewCategory = this.handlerNewCategory.bind(this)
+    this.handlerEditCategory = this.handlerEditCategory.bind(this)
     this.renderCategory = this.renderCategory.bind(this)
+    this.editCategory = this.editCategory.bind(this)
+    this.cancelEdit = this.cancelEdit.bind(this)
   }
   componentDidMount () {
     this.props.loadCategories()
   }
+  editCategory (category) {
+    this.setState({
+      currentCategory: category.id
+    })
+  }
+  cancelEdit (category) {
+    this.setState({
+      currentCategory: ''
+    })
+  }
   renderCategory (category) {
     return (
       <li key={category.id} className='list-group-item'>
-        <Link to={`/products/category/${category.id}`}>{category.name}</Link>
-        <i className='material-icons float-right delete-button' onClick={() => this.props.deleteCategory(category.id)}>delete</i>
+        { this.state.currentCategory === category.id && 
+          <div className='input-group'>
+            <input
+              type='text'
+              className='form-control'
+              defaultValue={category.name}
+              onKeyUp={this.handlerEditCategory}
+              ref={'category-' + category.id}
+            />
+            <div className='input-group-append'>
+              <div className='input-group-text'>
+                <i className='material-icons custom-button cancel' onClick={() => this.cancelEdit()}>cancel</i>
+              </div>
+            </div>
+          </div>
+        }
+        { this.state.currentCategory !== category.id && 
+          <div>
+            <Link to={`/products/category/${category.id}`}>{category.name}</Link>
+            <i className='material-icons custom-button delete' onClick={() => this.props.deleteCategory(category.id)}>delete</i>
+            <i className='material-icons custom-button edit' onClick={() => this.editCategory(category)}>edit</i>
+          </div>
+        }
       </li>
     )
   }
@@ -26,6 +63,15 @@ class Products extends Component {
       const name = this.refs.category.value
       this.props.addCategory(name)
       this.refs.category.value = ''
+    }
+  }
+  handlerEditCategory (key) {
+    if (key.keyCode === 13) {
+      this.props.editCategory({
+        id: this.state.currentCategory,
+        name: this.refs['category-' + this.state.currentCategory].value
+      })
+      this.setState({currentCategory: ''})
     }
   }
   render () {

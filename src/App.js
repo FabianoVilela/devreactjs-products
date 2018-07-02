@@ -12,6 +12,7 @@ class App extends Component {
     this.loadCategories = this.loadCategories.bind(this)
     this.deleteCategory = this.deleteCategory.bind(this)
     this.addCategory = this.addCategory.bind(this)
+    this.editCategory = this.editCategory.bind(this)
     this.state = {
       categories: []
     }
@@ -26,6 +27,12 @@ class App extends Component {
   }
   addCategory (name) {
     this.props.api.addCategory(name)
+      .then(res => {
+        this.loadCategories()
+      })
+  }
+  editCategory (name) {
+    this.props.api.editCategory(name)
       .then(res => {
         this.loadCategories()
       })
@@ -69,6 +76,7 @@ class App extends Component {
                 {...props}
                 loadCategories={this.loadCategories}
                 addCategory={this.addCategory}
+                editCategory={this.editCategory}
                 categories={this.state.categories}
                 deleteCategory={this.deleteCategory}
               />)
