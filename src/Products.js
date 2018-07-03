@@ -3,6 +3,7 @@ import { Route, Link } from 'react-router-dom'
 
 import ProductsHome from './ProductsHome'
 import Category from './Category'
+import ProductNew from './ProductsNew'
 
 class Products extends Component {
   constructor (props) {
@@ -10,8 +11,8 @@ class Products extends Component {
     this.state = {
       currentCategory: ''
     }
-    this.handlerNewCategory = this.handlerNewCategory.bind(this)
-    this.handlerEditCategory = this.handlerEditCategory.bind(this)
+    this.handleNewCategory = this.handleNewCategory.bind(this)
+    this.handleEditCategory = this.handleEditCategory.bind(this)
     this.renderCategory = this.renderCategory.bind(this)
     this.editCategory = this.editCategory.bind(this)
     this.cancelEdit = this.cancelEdit.bind(this)
@@ -31,14 +32,14 @@ class Products extends Component {
   }
   renderCategory (category) {
     return (
-      <li key={category.id} className='list-group-item'>
+      <li key={category.id} className={this.state.currentCategory === category.id ? 'list-group-item active' : 'list-group-item'} >
         { this.state.currentCategory === category.id && 
           <div className='input-group'>
             <input
               type='text'
               className='form-control'
               defaultValue={category.name}
-              onKeyUp={this.handlerEditCategory}
+              onKeyUp={this.handleEditCategory}
               ref={'category-' + category.id}
             />
             <div className='input-group-append'>
@@ -58,14 +59,14 @@ class Products extends Component {
       </li>
     )
   }
-  handlerNewCategory (key) {
+  handleNewCategory (key) {
     if (key.keyCode === 13) {
       const name = this.refs.category.value
       this.props.addCategory(name)
       this.refs.category.value = ''
     }
   }
-  handlerEditCategory (key) {
+  handleEditCategory (key) {
     if (key.keyCode === 13) {
       this.props.editCategory({
         id: this.state.currentCategory,
@@ -76,19 +77,27 @@ class Products extends Component {
   }
   render () {
     const { match, categories } = this.props
+
     return (
       <div className='row'>
         <div className='col-md-3'>
           <h3>Categories</h3>
           <div className='form-group'>
             <label>Add category</label>
-            <input className='form-control' type='text' ref='category' placeholder='New category' onKeyUp={this.handlerNewCategory} />
+            <input className='form-control' type='text' ref='category' placeholder='New category' onKeyUp={this.handleNewCategory} />
           </div>
-          <ul className='list-group'>{categories.map(this.renderCategory)}</ul>
+          <ul className='list-group mt-4'>{categories.map(this.renderCategory)}</ul>
         </div>
         <div className='col-md-9'>
           <h1>Products</h1>
           <Route exact path={match.url} component={ProductsHome} />
+          <Route exact path={match.url + '/new'} render={(props) => {
+            return (<ProductNew
+              {...props}
+              categories={categories}
+              addProduct={this.props.addProduct}
+            />)
+          }} />
           <Route path={match.url + '/category/:id'} component={Category} />
         </div>
       </div>

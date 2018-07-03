@@ -8,11 +8,13 @@ import About from './About'
 class App extends Component {
   constructor (props) {
     super(props)
-
+    // Categories
     this.loadCategories = this.loadCategories.bind(this)
     this.deleteCategory = this.deleteCategory.bind(this)
     this.addCategory = this.addCategory.bind(this)
     this.editCategory = this.editCategory.bind(this)
+    // Products
+    this.addProduct = this.addProduct.bind(this)
     this.state = {
       categories: []
     }
@@ -43,6 +45,9 @@ class App extends Component {
         this.loadCategories()
       })
   }
+  addProduct (product) {
+    this.props.api.addProduct(product)
+  }
   componentDidMount () {
     this.loadCategories()
   }
@@ -50,7 +55,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
+          <nav className='navbar navbar-expand-lg navbar-dark bg-dark mb-5'>
             <a href='/' className='navbar-brand'>Productis</a>
             <button className='navbar-toggler' type='button' data-toggle='collapse' data-target='#navabarMenu' aria-controls='navabarMenu' aria-expanded='false' aria-label='Toggle navigation'>
               <span className='navbar-toggler-icon' />
@@ -60,8 +65,14 @@ class App extends Component {
                 <li className='nav-item'>
                   <Link className='nav-link' to='/'>Home</Link>
                 </li>
-                <li className='nav-item'>
-                  <Link className='nav-link' to='/products'>Products</Link>
+                <li className='nav-item dropdown'>
+                  <a className='nav-link dropdown-toggle' href='' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                    Products
+                  </a>
+                  <div className='dropdown-menu' aria-labelledby='navbarDropdown'>
+                    <Link className='dropdown-item' to='/products'>List</Link>
+                    <Link className='dropdown-item' to='/products/new'>New</Link>
+                  </div>
                 </li>
                 <li className='nav-item'>
                   <Link className='nav-link' to='/about'>About</Link>
@@ -79,6 +90,7 @@ class App extends Component {
                 editCategory={this.editCategory}
                 categories={this.state.categories}
                 deleteCategory={this.deleteCategory}
+                addProduct={this.addProduct}
               />)
             }} />
             <Route exact path='/about' component={About} />
