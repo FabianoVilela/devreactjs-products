@@ -1,31 +1,31 @@
 import React, {
   Component
 } from 'react'
-import axios from 'axios'
 
 class Category extends Component {
   constructor (props) {
     super(props)
     this.loadProducts = this.loadProducts.bind(this)
     this.state = {
-      products: []
+      products: [],
+      category: null,
+      id: null
     }
   }
   loadProducts (id) {
-    axios.get(`http://localhost:3001/products?category=${id}`)
-      .then(res => {
-        this.setState({
-          products: res.data
-        })
-      })
+    this.props.loadProducts(id)
   }
   componentDidMount () {
     let id = this.props.match.params.id
+    this.setState({ id: id })
     this.loadProducts(id)
   }
   componentWillReceiveProps (newProps) {
     let id = newProps.match.params.id
-    this.loadProducts(id)
+    if (id !== this.state.id) {
+      this.loadProducts(id)
+      this.setState({ id: id })
+    }
   }
   renderProducts (product) {
     return (
@@ -33,8 +33,8 @@ class Category extends Component {
     )
   }
   render () {
-    return ( 
-      <ul>{this.state.products.map(this.renderProducts)}</ul>
+    return (
+      <ul>{this.props.products.map(this.renderProducts)}</ul>
     )
   }
 }

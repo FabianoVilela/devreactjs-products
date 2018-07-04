@@ -14,9 +14,11 @@ class App extends Component {
     this.addCategory = this.addCategory.bind(this)
     this.editCategory = this.editCategory.bind(this)
     // Products
+    this.loadProducts = this.loadProducts.bind(this)
     this.addProduct = this.addProduct.bind(this)
     this.state = {
-      categories: []
+      categories: [],
+      products: []
     }
   }
   loadCategories () {
@@ -43,6 +45,14 @@ class App extends Component {
     this.props.api.deleteCategory(id)
       .then(res => {
         this.loadCategories()
+      })
+  }
+  loadProducts (category) {
+    this.props.api.loadProducts(category)
+      .then((res) => {
+        this.setState({
+          products: res.data
+        })
       })
   }
   addProduct (product) {
@@ -91,6 +101,8 @@ class App extends Component {
                 categories={this.state.categories}
                 deleteCategory={this.deleteCategory}
                 addProduct={this.addProduct}
+                loadProducts={this.loadProducts}
+                products={this.state.products}
               />)
             }} />
             <Route exact path='/about' component={About} />

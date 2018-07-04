@@ -33,7 +33,7 @@ class Products extends Component {
   renderCategory (category) {
     return (
       <li key={category.id} className={this.state.currentCategory === category.id ? 'list-group-item active' : 'list-group-item'} >
-        { this.state.currentCategory === category.id && 
+        { this.state.currentCategory === category.id &&
           <div className='input-group'>
             <input
               type='text'
@@ -49,7 +49,7 @@ class Products extends Component {
             </div>
           </div>
         }
-        { this.state.currentCategory !== category.id && 
+        { this.state.currentCategory !== category.id &&
           <div>
             <Link to={`/products/category/${category.id}`}>{category.name}</Link>
             <i className='material-icons custom-button delete' onClick={() => this.props.deleteCategory(category.id)}>delete</i>
@@ -76,7 +76,7 @@ class Products extends Component {
     }
   }
   render () {
-    const { match, categories } = this.props
+    const { match, categories, products } = this.props
 
     return (
       <div className='row'>
@@ -98,7 +98,12 @@ class Products extends Component {
               addProduct={this.props.addProduct}
             />)
           }} />
-          <Route path={match.url + '/category/:id'} component={Category} />
+          <Route path={match.url + '/category/:id'}
+            render={(props) => {
+              return <Category {...props}
+                loadProducts={this.props.loadProducts}
+                products={products} />
+            }} />
         </div>
       </div>
     )
