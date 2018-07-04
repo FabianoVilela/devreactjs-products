@@ -46,7 +46,7 @@ class App extends Component {
       })
   }
   addProduct (product) {
-    this.props.api.addProduct(product)
+    return this.props.api.addProduct(product)
   }
   componentDidMount () {
     this.loadCategories()

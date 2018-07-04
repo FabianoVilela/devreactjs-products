@@ -1,20 +1,28 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 
 class Products extends Component {
   constructor (props) {
     super(props)
 
     this.handleNewProduct = this.handleNewProduct.bind(this)
+    this.state = {
+      redirect: false
+    }
   }
   handleNewProduct () {
-    const products = {
+    const product = {
       category: this.refs.category.value,
       name: this.refs.product.value
     }
-    this.props.addProduct(products)
+    this.props.addProduct(product)
+      .then((res) => this.setState({redirect: '/products/category/' + product.category}))
   }
   render () {
     const { categories } = this.props
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
     return (
       <div>
         <div className='form-group'>
