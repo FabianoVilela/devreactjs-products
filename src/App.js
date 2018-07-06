@@ -16,6 +16,7 @@ class App extends Component {
     // Products
     this.loadProducts = this.loadProducts.bind(this)
     this.addProduct = this.addProduct.bind(this)
+    this.deleteProduct = this.deleteProduct.bind(this)
     this.state = {
       categories: [],
       products: []
@@ -58,6 +59,9 @@ class App extends Component {
   addProduct (product) {
     return this.props.api.addProduct(product)
   }
+  deleteProduct (id) {
+    return this.props.api.deleteProduct(id)
+  }
   componentDidMount () {
     this.loadCategories()
   }
@@ -66,7 +70,7 @@ class App extends Component {
       <Router>
         <div>
           <nav className='navbar navbar-expand-lg navbar-dark bg-dark mb-5'>
-            <a href='/' className='navbar-brand'>Productis</a>
+            <a href='/' className='navbar-brand'>Products</a>
             <button className='navbar-toggler' type='button' data-toggle='collapse' data-target='#navabarMenu' aria-controls='navabarMenu' aria-expanded='false' aria-label='Toggle navigation'>
               <span className='navbar-toggler-icon' />
             </button>
@@ -102,6 +106,7 @@ class App extends Component {
                 deleteCategory={this.deleteCategory}
                 addProduct={this.addProduct}
                 loadProducts={this.loadProducts}
+                deleteProduct={this.deleteProduct}
                 products={this.state.products}
               />)
             }} />

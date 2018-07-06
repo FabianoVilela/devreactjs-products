@@ -102,6 +102,7 @@ class Products extends Component {
             render={(props) => {
               return <Category {...props}
                 loadProducts={this.props.loadProducts}
+                deleteProduct={this.props.deleteProduct}
                 products={products} />
             }} />
         </div>

@@ -12,7 +12,8 @@ const apis = {
   editCategory: (category) => api.put('categories/' + category.id, category),
   // Products
   addProduct: (product) => api.post('products/', product),
-  loadProducts: (id) => api.get('/products?category=' + id)
+  loadProducts: (id) => api.get('/products?category=' + id),
+  deleteProduct: (id) => api.delete('products/' + id)
 }
 
 export default apis

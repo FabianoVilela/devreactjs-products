@@ -6,6 +6,7 @@ class Category extends Component {
   constructor (props) {
     super(props)
     this.loadProducts = this.loadProducts.bind(this)
+    this.renderProducts = this.renderProducts.bind(this)
     this.state = {
       products: [],
       category: null,
@@ -29,7 +30,14 @@ class Category extends Component {
   }
   renderProducts (product) {
     return (
-      <li key={product.id}>{product.name}</li>
+      <li key={product.id}>
+        {product.name}
+        <i className='material-icons custom-button delete' onClick={() =>
+          this.props.deleteProduct(product.id)
+            .then(res => this.loadProducts(this.state.id))
+        }>delete
+        </i>
+      </li>
     )
   }
   render () {
