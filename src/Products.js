@@ -9,7 +9,8 @@ class Products extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      currentCategory: ''
+      currentCategory: '',
+      categoryId: null
     }
     this.handleNewCategory = this.handleNewCategory.bind(this)
     this.handleEditCategory = this.handleEditCategory.bind(this)
@@ -22,7 +23,8 @@ class Products extends Component {
   }
   editCategory (category) {
     this.setState({
-      currentCategory: category.id
+      currentCategory: category.id,
+      categoryId: category.id
     })
   }
   cancelEdit (category) {
@@ -32,7 +34,9 @@ class Products extends Component {
   }
   renderCategory (category) {
     return (
-      <li key={category.id} className={this.state.currentCategory === category.id ? 'list-group-item active' : 'list-group-item'} >
+      <Link key={category.id} to={`/products/category/${category.id}`}
+        onClick={() => this.setState({categoryId: category.id})}
+        className={this.state.categoryId === category.id ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'}>
         { this.state.currentCategory === category.id &&
           <div className='input-group'>
             <input
@@ -51,12 +55,12 @@ class Products extends Component {
         }
         { this.state.currentCategory !== category.id &&
           <div>
-            <Link to={`/products/category/${category.id}`}>{category.name}</Link>
+            {category.name}
             <i className='material-icons custom-button delete' onClick={() => this.props.deleteCategory(category.id)}>delete</i>
             <i className='material-icons custom-button edit' onClick={() => this.editCategory(category)}>edit</i>
           </div>
         }
-      </li>
+      </Link>
     )
   }
   handleNewCategory (key) {
@@ -86,7 +90,7 @@ class Products extends Component {
             <label>Add category</label>
             <input className='form-control' type='text' ref='category' placeholder='New category' onKeyUp={this.handleNewCategory} />
           </div>
-          <ul className='list-group mt-4'>{categories.map(this.renderCategory)}</ul>
+          <div className='list-group mt-4'>{categories.map(this.renderCategory)}</div>
         </div>
         <div className='col-md-9'>
           <h1>Products</h1>
