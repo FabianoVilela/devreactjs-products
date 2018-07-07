@@ -1,6 +1,7 @@
 import React, {
   Component
 } from 'react'
+import { Link } from 'react-router-dom'
 
 class Category extends Component {
   constructor (props) {
@@ -37,6 +38,9 @@ class Category extends Component {
             .then(res => this.loadProducts(this.state.id))
         }>delete
         </i>
+        <Link to={'/products/edit/' + product.id}>
+          <i className='material-icons custom-button edit'>edit</i>
+        </Link>
       </li>
     )
   }

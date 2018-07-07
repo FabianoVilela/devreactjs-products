@@ -4,6 +4,7 @@ import { Route, Link } from 'react-router-dom'
 import ProductsHome from './ProductsHome'
 import Category from './Category'
 import ProductNew from './ProductsNew'
+import ProductEdit from './ProductEdit'
 
 class Products extends Component {
   constructor (props) {
@@ -95,6 +96,14 @@ class Products extends Component {
         <div className='col-md-9'>
           <h1>Products</h1>
           <Route exact path={match.url} component={ProductsHome} />
+          <Route path={match.url + '/edit/:id'} render={(props) => {
+            return (<ProductEdit
+              {...props}
+              categories={categories}
+              editProduct={this.props.editProduct}
+              getProduct={this.props.getProduct}
+            />)
+          }} />
           <Route exact path={match.url + '/new'} render={(props) => {
             return (<ProductNew
               {...props}
@@ -106,6 +115,7 @@ class Products extends Component {
             render={(props) => {
               return <Category {...props}
                 loadProducts={this.props.loadProducts}
+                // getProduct={this.props.getProduct}
                 deleteProduct={this.props.deleteProduct}
                 products={products} />
             }} />
